@@ -1,5 +1,7 @@
 FROM golang AS build-env
 
+RUN go get github.com/rs/cors
+
 WORKDIR /go/src/github.com/ramonberrutti/desafio-tegra-backend
 COPY ./ ./
 

@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"sort"
 	"time"
+
+	"github.com/rs/cors"
 )
 
 type jsonPatch struct {
@@ -100,5 +102,5 @@ func initServer(airports Airports, graph *Graph) error {
 		searchFlights(graph, w, r)
 	})
 
-	return http.ListenAndServe(":8080", mux)
+	return http.ListenAndServe(":8080", cors.AllowAll().Handler(mux))
 }
