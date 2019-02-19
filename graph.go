@@ -67,6 +67,7 @@ func (g *Graph) GetNode(name string) *Node {
 func (g *Graph) GetEdges(name string) []*Edge {
 	edges := make([]*Edge, 0)
 
+	g.lock.RLock()
 	if g.edges == nil || g.edges[name] == nil {
 		return edges
 	}
@@ -76,6 +77,7 @@ func (g *Graph) GetEdges(name string) []*Edge {
 			edges = append(edges, edge)
 		}
 	}
+	g.lock.RUnlock()
 
 	return edges
 }
@@ -84,6 +86,7 @@ func (g *Graph) GetEdges(name string) []*Edge {
 func (g *Graph) GetEdgesTo(nameFrom, nameTo string) []*Edge {
 	edges := make([]*Edge, 0)
 
+	g.lock.RLock()
 	if g.edges == nil || g.edges[nameFrom] == nil || g.edges[nameFrom][nameTo] == nil {
 		return edges
 	}
@@ -91,6 +94,7 @@ func (g *Graph) GetEdgesTo(nameFrom, nameTo string) []*Edge {
 	for edge := range g.edges[nameFrom][nameTo] {
 		edges = append(edges, edge)
 	}
+	g.lock.RUnlock()
 
 	return edges
 }
@@ -126,58 +130,3 @@ func (g *Graph) foundRoute(from, to string, visited map[string]bool, list []Edge
 
 	}
 }
-
-/*
-   // Prints all paths from
-   // 's' to 'd'
-   public void printAllPaths(int s, int d)
-   {
-       boolean[] isVisited = new boolean[v];
-       ArrayList pathList = new ArrayList<>();
-
-       //add source to path[]
-       pathList.add(s);
-
-       //Call recursive utility
-       printAllPathsUtil(s, d, isVisited, pathList);
-   }
-
-   // A recursive function to print
-   // all paths from 'u' to 'd'.
-   // isVisited[] keeps track of
-   // vertices in current path.
-   // localPathList<> stores actual
-   // vertices in the current path
-   private void printAllPathsUtil(Integer u, Integer d,
-                                   boolean[] isVisited,
-                           List localPathList) {
-
-       // Mark the current node
-       isVisited[u] = true;
-
-       if (u.equals(d))
-       {
-           System.out.println(localPathList);
-       }
-
-       // Recur for all the vertices
-       // adjacent to current vertex
-       for (Integer i : adjList[u])
-       {
-           if (!isVisited[i])
-           {
-               // store current node
-               // in path[]
-               localPathList.add(i);
-               printAllPathsUtil(i, d, isVisited, localPathList);
-
-               // remove current node
-               // in path[]
-               localPathList.remove(i);
-           }
-       }
-
-       // Mark the current node
-       isVisited[u] = false;
-   }
-*/
