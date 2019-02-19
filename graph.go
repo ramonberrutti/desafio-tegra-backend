@@ -116,6 +116,7 @@ func (g *Graph) FoundRoute(nodeFrom, nodeTo string, initialFilter func(nodeFrom 
 func (g *Graph) foundRoute(from, to string, visited map[string]bool, list []Edge, globalList *[][]Edge, routeFilter func(nodeFrom string, edgeFrom, edge Edge) bool) {
 	if from == to {
 		*globalList = append(*globalList, list)
+		return
 	}
 
 	if visited[from] == true {
